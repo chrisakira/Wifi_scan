@@ -61,6 +61,7 @@ void Scan()
   showDevices();
   yield();
 }
+
 void purgeDevice() {
   for (int u = 0; u < clients_known_count; u++) {
     if ((millis() - clients_known[u].lastDiscoveredTime) > PURGETIME) {
