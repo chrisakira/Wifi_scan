@@ -8,7 +8,7 @@
 #define SENDTIME 30000
 #define MAXDEVICES 60
 #define PURGETIME 600000
-#define MINRSSI -100
+#define MINRSSI -40
 
 unsigned int channel = 1;
 int clients_known_count_old, aps_known_count_old;
@@ -42,15 +42,14 @@ void loop() {
   channel = 1;
   wifi_set_channel(channel);
   while (true) {
-    nothing_new++;                          // Array is not finite, check bounds and adjust if required
-    if (nothing_new > 200) {                // monitor channel for 200 ms
+    nothing_new++;
+    if (nothing_new > 200) {                
       nothing_new = 0;
       channel++;
-      if (channel == 15) break;             // Only scan channels 1 to 14
+      if (channel == 15) break;             
       wifi_set_channel(channel);
     }
-    delay(1);  // critical processing timeslice for NONOS SDK! No delay(0) yield()
-
+    delay(1);  
     
   }
   void purgeDevice();
@@ -67,15 +66,6 @@ void purgeDevice() {
       break;
     }
   }
-  for (int u = 0; u < aps_known_count; u++) {
-    if ((millis() - aps_known[u].lastDiscoveredTime) > PURGETIME) {
-      Serial.print("purge Bacon" );
-      Serial.println(u);
-      for (int i = u; i < aps_known_count; i++) memcpy(&aps_known[i], &aps_known[i + 1], sizeof(aps_known[i]));
-      aps_known_count--;
-      break;
-    }
-  }
 }
 
 
@@ -84,17 +74,6 @@ void showDevices() {
   Serial.println("");
   Serial.println("-------------------Device DB-------------------");
   Serial.printf("%4d Devices + Clients.\n",aps_known_count + clients_known_count); // show count
-
-  // show Beacons
-  for (int u = 0; u < aps_known_count; u++) {
-    Serial.printf( "%4d ",u); // Show beacon number
-    Serial.print("B ");
-    Serial.print(formatMac1(aps_known[u].bssid));
-    Serial.print(" RSSI ");
-    Serial.print(aps_known[u].rssi);
-    Serial.print(" channel ");
-    Serial.println(aps_known[u].channel);
-  }
 
   // show Clients
   for (int u = 0; u < clients_known_count; u++) {

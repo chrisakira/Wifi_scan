@@ -85,7 +85,6 @@ struct clientinfo parse_data(uint8_t *frame, uint16_t framelen, signed rssi, uns
   ci.channel = channel;
   ci.err = 0;
   ci.rssi = rssi;
-  int pos = 36;
   uint8_t *bssid;
   uint8_t *station;
   uint8_t *ap;
@@ -132,7 +131,6 @@ struct clientinfo parse_probe(uint8_t *frame, uint16_t framelen, signed rssi)
   pi.channel = -1;
   pi.err = 0;
   pi.rssi = rssi;
-  struct sniffer_buf2 *sniffer = (struct sniffer_buf2*) frame;
   memset(pi.bssid,0xFF,ETH_MAC_LEN);
   memcpy(pi.station, frame + 10, ETH_MAC_LEN);
   if ((pi.station[0] & 2) == 2) pi.channel=-2; // Randomised MAC !
