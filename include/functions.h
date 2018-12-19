@@ -25,6 +25,8 @@ String formatMac1(uint8_t mac[ETH_MAC_LEN]) {
 
 int register_client(clientinfo &ci) {
   int known = 0;
+  if(ci.rssi > -60)
+  {
   for (int u = 0; u < clients_known_count; u++)
   {
     if (! memcmp(clients_known[u].station, ci.station, ETH_MAC_LEN)) {
@@ -53,6 +55,7 @@ int register_client(clientinfo &ci) {
     }
   }
   return known;
+  }
 }
 
 String print_client(clientinfo ci)

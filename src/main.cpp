@@ -6,7 +6,7 @@
 #define disable 0
 #define enable  1
 #define SENDTIME 30000
-#define MAXDEVICES 60
+#define MAXDEVICES 10
 #define PURGETIME 600000
 #define MINRSSI -40
 
@@ -34,11 +34,17 @@ void setup() {
   wifi_promiscuous_enable(enable);
 }
 
-
-void purgedevice();
-void showdevice();
+void Scan();
+void purgeDevice();
+void showDevices();
 
 void loop() {
+  Scan();
+  delay(500);
+}
+void Scan()
+{
+  for(int i = 0; i<10 ; i++){
   channel = 1;
   wifi_set_channel(channel);
   while (true) {
@@ -50,12 +56,11 @@ void loop() {
       wifi_set_channel(channel);
     }
     delay(1);  
-    
+  } 
   }
-  void purgeDevice();
-  void showDevices();
+  showDevices();
+  yield();
 }
-
 void purgeDevice() {
   for (int u = 0; u < clients_known_count; u++) {
     if ((millis() - clients_known[u].lastDiscoveredTime) > PURGETIME) {
