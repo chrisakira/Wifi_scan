@@ -6,7 +6,7 @@
 
 #define MAX_APS_TRACKED 100
 #define MAX_CLIENTS_TRACKED 200
-#define MINRSSI -40
+#define MINRSSI -80
 #define disable 0
 #define enable 1
 #define SENDTIME 30000
@@ -141,14 +141,14 @@ void Scan()
   wifi_promiscuous_enable(disable);
   wifi_set_promiscuous_rx_cb(promisc_cb); // Set up promiscuous callback
   wifi_promiscuous_enable(enable);
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 50; i++)
   {
     channel = 1;
     wifi_set_channel(channel);
     while (true)
     {
       nothing_new++;
-      if (nothing_new > 100)
+      if (nothing_new > 50)
       {
         nothing_new = 0;
         channel++;
