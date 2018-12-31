@@ -23,6 +23,23 @@ void PubSubSetup(const char* mqttServer,const int mqttPort,const char* mqttUser,
     }
   }
 }
+
+void PubSubSetup(const char* mqttServer,const int mqttPort)
+{
+  client.setServer(mqttServer, mqttPort);
+  client.setCallback(mqtt_callback);
+  while (!client.connected()) {
+    Serial.println("Connecting to MQTT...");
+    if (client.connect("ESP8266Client")) {
+      Serial.println("connected");
+    } else {
+      Serial.print("failed with state ");
+      Serial.print(client.state());
+      delay(2000);
+    }
+  }
+}
+
 void PubSubReconnect(const char* mqttUser,const char* mqttPassword)
 {
   while (!client.connected()) {

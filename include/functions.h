@@ -6,7 +6,7 @@
 
 #define MAX_APS_TRACKED 100
 #define MAX_CLIENTS_TRACKED 200
-#define MINRSSI -80
+#define MINRSSI -65
 #define disable 0
 #define enable 1
 #define SENDTIME 30000
@@ -26,6 +26,8 @@ int clients_known_count = 0;
 String device[MAXDEVICES];
 
 
+void promisc_cb(uint8_t *buf, uint16_t len);
+
 String formatMac1(uint8_t mac[ETH_MAC_LEN]) {
   String hi = "";
   for (int i = 0; i < ETH_MAC_LEN; i++) {
@@ -38,7 +40,7 @@ String formatMac1(uint8_t mac[ETH_MAC_LEN]) {
 
 int register_client(clientinfo &ci) {
   int known = 0;
-  if(ci.rssi > MINRSSI)
+   if(ci.rssi > MINRSSI)
   {
   for (int u = 0; u < clients_known_count; u++)
   {
@@ -141,7 +143,7 @@ void Scan()
   wifi_promiscuous_enable(disable);
   wifi_set_promiscuous_rx_cb(promisc_cb); // Set up promiscuous callback
   wifi_promiscuous_enable(enable);
-  for (int i = 0; i < 50; i++)
+  for (int i = 0; i < 40; i++)
   {
     channel = 1;
     wifi_set_channel(channel);
